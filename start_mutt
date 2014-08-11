@@ -1,0 +1,7 @@
+#!/bin/zsh
+#
+# Start mutt
+#
+
+echo "`date`: $0" >>/tmp/start.log
+urxvt256c-ml -title "mutt" -class "Mutt" -e mutt 

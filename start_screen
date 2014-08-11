@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# Start a xterm either remote or local executing screen
+#
+
+if [ "x$1" = "x" -o "$1" = "`hostname`" ] ;
+then
+	urxvt256c-ml -title "`hostname`" -e screen -RD 
+else 
+	urxvt256c-ml -title "$1" -e ssh -t -X $1 screen -RD
+fi
