@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+#
+
+
+if [ "beast" = "`hostname -s`" ] ;
+then
+	synergys
+else
+	synergyc
+fi                 
