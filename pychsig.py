@@ -7,7 +7,7 @@ from optparse import OptionParser
 
 def greeting(code):
     if (code==1):
-        res = "Mit freundlichen Grüßen\n"
+        res = "Mit freundlichen Grüßen/Best Regards\n"
     else:
         res = "Viele Grüße"
     res += "\nChristoph Heuel\n"
@@ -18,12 +18,10 @@ def contactOptions(code, mail):
     res += fillLine("E-Mail: "+mail)
     if (code=="allg"):
         res += fillLine("Mobile: +49 (177) 4243715")
-        res += fillLine("Home: +49 (2592) 918414")
     elif (code=="tudo"):
         res += fillLine("Mobile: +49 (177) 4243715")
-        res += fillLine("Home: +49 (2592) 918414")
     res += "+"+"-"*74+"+\n"
-    res += fillLine("Public-PGP-Key: http://www.christoph-heuel.net/ch_gpg.key")
+    res += fillLine("Public-PGP-Key: http://www.christoph-heuel.net/ch_pub_key_2013.asc")
     res += "+"+"-"*74+"+"
         
         
