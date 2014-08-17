@@ -7,5 +7,5 @@ if [ "beast" = "`hostname -s`" ] ;
 then
 	synergys
 else
-	synergyc
+	synergyc beast
 fi                 
