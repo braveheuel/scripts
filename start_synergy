@@ -2,10 +2,11 @@
 #
 #
 
+LOGLEVEL="FATAL"
 
 if [ "beast" = "`hostname -s`" ] ;
 then
-	synergys
+	synergys -d $LOGLEVEL
 else
-	synergyc beast
+	synergyc -d $LOGLEVEL beast
 fi                 
