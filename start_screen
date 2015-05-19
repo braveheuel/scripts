@@ -3,9 +3,33 @@
 # Start a xterm either remote or local executing screen
 #
 
+term_to_use="roxterm"
+
+# Test if terminal to use is existent
+hash $term_to_use
+rv=$?
+if [ $rv -nq 0 ];
+then
+	echo "$term_to_use not found, using xterm"
+	term_to_use="xterm"
+fi
+
+issue_terminal() {
+	terminal_title="$1"
+	cmd="$2"
+	case $term_to_use in
+		roxterm)
+			$term_to_use --hide-menubar --title "$terminal_title" -e "$cmd"
+			;;
+		*)
+			xterm -title "$terminal_title" -e "$cmd"
+			;;
+	esac	
+}
+
 if [ "x$1" = "x" -o "$1" = "`hostname`" ] ;
 then
-	urxvt -title "`hostname`" -e screen -RD 
+	issue_terminal "`hostname`" "screen -RD"
 else 
-	urxvt -title "$1" -e ssh -t -X $1 screen -RD
+	issue_terminal "$1" "ssh -t -X $1 screen -RD"
 fi
