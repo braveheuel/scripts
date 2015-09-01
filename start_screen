@@ -8,7 +8,7 @@ term_to_use="roxterm"
 # Test if terminal to use is existent
 hash $term_to_use
 rv=$?
-if [ $rv -nq 0 ];
+if [ $rv -ne 0 ];
 then
 	echo "$term_to_use not found, using xterm"
 	term_to_use="xterm"
