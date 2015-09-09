@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 #
 
-set -x
-
 HOSTLIST_DIR="$HOME/.config/term-starter"
 ROFI_CALL="rofi -dmenu"
 
