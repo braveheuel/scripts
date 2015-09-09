@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+#
+
+set -x
+
+HOSTLIST_DIR="$HOME/.config/term-starter"
+ROFI_CALL="rofi -dmenu"
+
+term_to_use="roxterm"
+
+function get_hostlist {
+	for HOST in `ls $HOSTLIST_DIR`
+	do
+		ret_val+="${HOST}\n"
+	done
+	eval "$1='$ret_val'"
+}
+
+function call_command {
+	short_host=$1
+	host_config_file="$HOSTLIST_DIR/$1"
+
+	if [ -e $host_config_file ];
+	then
+		eval `cat $host_config_file`
+	else
+		touch $host_config_file
+	fi
+
+	if [ -z "$address" ];
+	then
+		address="$short_host"
+	fi
+
+	if [ "x$use_screen" = "x" ];
+	then
+		# default to use screen
+		use_screen="yes"
+	fi
+
+	# Test if terminal to use is existent
+	hash $term_to_use
+	rv=$?
+	if [ $rv -ne 0 ];
+	then
+		echo "$term_to_use not found, using xterm"
+		term_to_use="xterm"
+	fi
+
+	if [ "$use_screen" = "yes" ];
+	then
+		cmd="screen -RD"
+	else
+		cmd=""
+	fi
+
+	if [ "x$short_host" = "x" -o "$short_host" = "`hostname -s`" ] ;
+	then
+		issue_terminal "`hostname -s`" "$cmd"
+	else 
+		issue_terminal "$short_host" "ssh -t -X \"$short_host\" \"$cmd\""
+	fi
+}
+
+
+issue_terminal() {
+	terminal_title="$1"
+	cmd="$2"
+	case $term_to_use in
+		roxterm)
+			$term_to_use --hide-menubar --title "$terminal_title" -e "$cmd"
+			;;
+		*)
+			xterm -title "$terminal_title" -e "$cmd"
+			;;
+	esac	
+}
+
+
+get_hostlist HOSTLIST
+
+MENU_LIST="${HOSTLIST}----\nEdit host\nRemove host"
+
+SELECTION=`printf "$MENU_LIST" | $ROFI_CALL -p terminal-starter `
+
+case "$SELECTION" in
+	"Remove host")
+		REMOVEHOST=`printf "$HOSTLIST" | $ROFI_CALL -p 'remove host'`
+		if [ ! -z "$REMOVEHOST" ];
+		then
+			xmessage -buttons yes:0,no:1 "Really remove $REMOVEHOST?"
+			rv=$?
+			if [ $rv -eq 0 ];
+			then
+				rm "$HOSTLIST_DIR/$REMOVEHOST"
+			fi
+		fi
+		;;
+	"Edit host")
+		EDITHOST=`printf "$HOSTLIST" | $ROFI_CALL -p edit host`
+		if [ ! -z "$EDITHOST" ];
+		then
+			issue_terminal "Edit Terminal" "vi '$HOSTLIST_DIR/$EDITHOST'"
+		fi
+		;;
+	"----")
+		exit 0
+		;;
+	"")
+		exit 0
+		;;
+	*)
+		call_command $SELECTION
+		;;
+esac
