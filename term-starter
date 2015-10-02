@@ -74,40 +74,48 @@ issue_terminal() {
 	esac	
 }
 
+main() {
+	get_hostlist HOSTLIST
 
-get_hostlist HOSTLIST
+	MENU_LIST="${HOSTLIST}----\nEdit host\nRemove host"
 
-MENU_LIST="${HOSTLIST}----\nEdit host\nRemove host"
+	SELECTION=`printf "$MENU_LIST" | $ROFI_CALL -p terminal-starter: `
 
-SELECTION=`printf "$MENU_LIST" | $ROFI_CALL -p terminal-starter: `
-
-case "$SELECTION" in
-	"Remove host")
-		REMOVEHOST=`printf "$HOSTLIST" | $ROFI_CALL -p 'remove host'`
-		if [ ! -z "$REMOVEHOST" ];
-		then
-			xmessage -buttons yes:0,no:1 "Really remove $REMOVEHOST?"
-			rv=$?
-			if [ $rv -eq 0 ];
+	case "$SELECTION" in
+		"Remove host")
+			REMOVEHOST=`printf "$HOSTLIST" | $ROFI_CALL -p 'remove host'`
+			if [ ! -z "$REMOVEHOST" ];
 			then
-				rm "$HOSTLIST_DIR/$REMOVEHOST"
+				xmessage -buttons yes:0,no:1 "Really remove $REMOVEHOST?"
+				rv=$?
+				if [ $rv -eq 0 ];
+				then
+					rm "$HOSTLIST_DIR/$REMOVEHOST"
+				fi
 			fi
-		fi
-		;;
-	"Edit host")
-		EDITHOST=`printf "$HOSTLIST" | $ROFI_CALL -p edit host`
-		if [ ! -z "$EDITHOST" ];
-		then
-			issue_terminal "Edit Terminal" "vi '$HOSTLIST_DIR/$EDITHOST'"
-		fi
-		;;
-	"----")
-		exit 0
-		;;
-	"")
-		exit 0
-		;;
-	*)
-		call_command $SELECTION
-		;;
-esac
+			;;
+		"Edit host")
+			EDITHOST=`printf "$HOSTLIST" | $ROFI_CALL -p edit host`
+			if [ ! -z "$EDITHOST" ];
+			then
+				issue_terminal "Edit Terminal" "vi '$HOSTLIST_DIR/$EDITHOST'"
+			fi
+			;;
+		"----")
+			exit 0
+			;;
+		"")
+			exit 0
+			;;
+		*)
+			call_command $SELECTION
+			;;
+	esac
+}
+
+if [ "x$1" = "x" ];
+then
+	main
+else
+	call_command $1
+fi
