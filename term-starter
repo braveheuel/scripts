@@ -79,7 +79,7 @@ get_hostlist HOSTLIST
 
 MENU_LIST="${HOSTLIST}----\nEdit host\nRemove host"
 
-SELECTION=`printf "$MENU_LIST" | $ROFI_CALL -p terminal-starter `
+SELECTION=`printf "$MENU_LIST" | $ROFI_CALL -p terminal-starter: `
 
 case "$SELECTION" in
 	"Remove host")
