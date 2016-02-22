@@ -52,11 +52,20 @@ function call_command {
 		cmd=""
 	fi
 
+	ssh_args="-t"
+
+	if [ "$x11_forward" = "no" ];
+	then
+		ssh_args="$ssh_args"
+	else
+		ssh_args="$ssh_args -X"
+	fi
+
 	if [ "x$short_host" = "x" -o "$short_host" = "`hostname -s`" ] ;
 	then
 		issue_terminal "`hostname -s`" "$cmd"
 	else 
-		issue_terminal "$short_host" "ssh -t -X \"$short_host\" \"$cmd\""
+		issue_terminal "$short_host" "ssh $ssh_args \"$short_host\" \"$cmd\""
 	fi
 }
 
