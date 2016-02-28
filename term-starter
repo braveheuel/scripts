@@ -30,10 +30,10 @@ function call_command {
 		address="$short_host"
 	fi
 
-	if [ "x$use_screen" = "x" ];
+	if [ "x$muxer" = "x" ];
 	then
 		# default to use screen
-		use_screen="yes"
+		muxer="screen"
 	fi
 
 	# Test if terminal to use is existent
@@ -45,12 +45,16 @@ function call_command {
 		term_to_use="xterm"
 	fi
 
-	if [ "$use_screen" = "yes" ];
-	then
-		cmd="screen -RD"
-	else
-		cmd=""
-	fi
+	case $muxer in
+		screen)
+			cmd="screen -RD"
+			;;
+		tmux)
+			cmd="tmux -2 new-session -A -s terminal"
+			;;
+		*)
+			cmd=""
+	esac
 
 	ssh_args="-t"
 
