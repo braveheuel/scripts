@@ -4,9 +4,9 @@
 
 LOGLEVEL="FATAL"
 
-if [ "beast" = "`hostname -s`" ] ;
+if [ "silversurfer" = "`hostname -s`" ] ;
 then
 	synergys -d $LOGLEVEL
 else
-	synergyc -d $LOGLEVEL beast
+	synergyc -d $LOGLEVEL silversurfer
 fi                 
