@@ -30,12 +30,6 @@ function call_command {
 		address="$short_host"
 	fi
 
-	if [ "x$muxer" = "x" ];
-	then
-		# default to use screen
-		muxer="screen"
-	fi
-
 	# Test if terminal to use is existent
 	hash $term_to_use
 	rv=$?
