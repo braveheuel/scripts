@@ -105,7 +105,7 @@ main() {
 			EDITHOST=`printf "$HOSTLIST" | $ROFI_CALL -p edit host`
 			if [ ! -z "$EDITHOST" ];
 			then
-				issue_terminal "Edit Terminal" "vi '$HOSTLIST_DIR/$EDITHOST'"
+				issue_terminal "Edit Terminal" "vim '$HOSTLIST_DIR/$EDITHOST'"
 			fi
 			;;
 		"----")
