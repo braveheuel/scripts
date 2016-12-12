@@ -27,7 +27,7 @@ function call_command {
 
 	if [ -z "$address" ];
 	then
-		address="$short_host"
+		address=`echo $short_host | sed 's/.*\@//'`
 	fi
 
 	# Test if terminal to use is existent
@@ -63,7 +63,13 @@ function call_command {
 	then
 		issue_terminal "`hostname -s`" "$cmd"
 	else 
-		issue_terminal "$short_host" "ssh $ssh_args \"$short_host\" \"$cmd\""
+		ping -c 1 "$address"
+		if [ $? -eq 0 ];
+		then
+			issue_terminal "$short_host" "ssh $ssh_args \"$short_host\" \"$cmd\""
+		else
+			notify-send --icon=process-stop "$short_host" "$address is not reachable!"
+		fi
 	fi
 }
 
