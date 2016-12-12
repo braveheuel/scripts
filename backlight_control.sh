@@ -1,12 +1,14 @@
 #!/bin/bash
 #
-yet=`cat /sys/class/backlight/acpi_video0/actual_brightness`
-max=`cat /sys/class/backlight/acpi_video0/max_brightness`
+SOURCEPATH="/sys/class/backlight/intel_backlight/"
+yet=`cat $SOURCEPATH/actual_brightness`
+max=`cat $SOURCEPATH/max_brightness`
+BRIGHTNESS="$SOURCEPATH/brightness"
 
 bl_up() {
     if [ $yet -lt $max ]; then
-        let new=$yet+1
-        sudo su -c "echo $new > /sys/class/backlight/acpi_video0/brightness"
+        let new=$yet+10
+        sudo su -c "echo $new > $BRIGHTNESS"
     else
         echo "Helligkeit ist schon maximal"
     fi
@@ -14,8 +16,8 @@ bl_up() {
 
 bl_down() {
     if [ $yet -gt 0 ]; then
-        let new=$yet-1
-        sudo su -c "echo $new > /sys/class/backlight/acpi_video0/brightness"
+        let new=$yet-10
+        sudo su -c "echo $new > $BRIGHTNESS"
     else
         echo "Noch dunkler geht nicht"
     fi
