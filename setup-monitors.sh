@@ -11,7 +11,7 @@
 #xrandr -d :0.0 --output DP2-1 --left-of eDP1 --auto
 xrandr -d :0.0 --output DP2-2 --left-of eDP1 --auto
 #xrandr -d :0.0 --output DP2-2 --left-of DP2-1 --auto
-xrandr -d :0.0 --output DP2-3 --left-of DP2-2 --auto
+#xrandr -d :0.0 --output DP2-3 --left-of DP2-2 --auto
 
 # reload i3
 i3-msg reload
