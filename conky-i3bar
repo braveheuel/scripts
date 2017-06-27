@@ -10,4 +10,9 @@ echo '['
 echo '[],'
 
 # Now send blocks with information forever:
-exec conky -c $HOME/.i3/conky_bar
+if [ -z "$1" ];
+then
+        exec conky -c "$HOME/.i3/conky_bar"
+else
+        exec conky -c "$HOME/.i3/conky_bar_$1"
+fi
