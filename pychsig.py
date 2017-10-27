@@ -12,7 +12,7 @@ def greeting(code):
         res = "Viele Grüße"
     res += "\nChristoph Heuel\n"
     return res
-    
+
 def contactOptions(code, mail):
     res = "+"+"-"*74+"+\n"
     res += fillLine("E-Mail: "+mail)
@@ -21,32 +21,32 @@ def contactOptions(code, mail):
     elif (code=="tudo"):
         res += fillLine("Mobile: +49 (177) 4243715")
     res += "+"+"-"*74+"+\n"
-    res += fillLine("Public-PGP-Key: http://www.christoph-heuel.net/ch_pub_key_2013.asc")
+    res += fillLine("Public-PGP-Key: http://www.heuel-web.de/ch_pub_key_2013.asc")
     res += "+"+"-"*74+"+"
-        
-        
+
+
     return res
 
 def fillLine(text, l=76):
     pad = " "*(l-len(text)-3)+"|\n"
     res = "| "+text+pad
     return res
-        
+
 def main():
     parser = OptionParser()
-    parser.add_option("-m", "--mail", dest="mail", 
+    parser.add_option("-m", "--mail", dest="mail",
                       help="E-Mail-Address for signature"
-                      , metavar="MAIL", default="mail@christoph-heuel.net")
-    
-    parser.add_option("-s", "--sig", dest="sig", 
+                      , metavar="MAIL", default="christoph@heuel-web.de")
+
+    parser.add_option("-s", "--sig", dest="sig",
                       help="Type of signature"
                       , metavar="SIG", default="allg")
-    
+
     (options, args) = parser.parse_args()
-        
+
     print greeting(1)
     print contactOptions(options.sig, options.mail)
-        
-        
+
+
 if __name__ == '__main__':
     main()
