@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+#
+
+if [ -z $1 ];
+then
+	feh
+else
+	FPATH=$(readlink -e $1)
+	if [ $? -ne 0 ];
+	then
+		printf "File '%s' does not exist!\n" ${1}
+		exit 1
+	fi
+	DPATH=$(dirname $FPATH)
+	printf "%s:%s:%s" ${1} ${DPATH} ${FPATH}
+	if [ -d ${FPATH} ];
+	then
+		feh -p ${FPATH}
+	else
+		printf "Opening %s in path '%s'\n" ${FPATH} ${DPATH}
+		feh -p --start-at ${FPATH} ${DPATH}
+	fi
+fi
