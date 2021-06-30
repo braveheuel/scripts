@@ -1,7 +1,12 @@
 #!/bin/sh
 
 lock() {
-	xscreensaver-command -lock
+	if [ -z "$WAYLAND_DISPLAY" ];
+	then
+		xscreensaver-command -lock
+	else
+		swaylock -i ~/Bilder/Background/actual &
+	fi
 }
 
 case "$1" in
