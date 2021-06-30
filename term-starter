@@ -1,10 +1,21 @@
 #!/usr/bin/env bash
 #
 
-HOSTLIST_DIR="$HOME/.config/term-starter"
-ROFI_CALL="rofi -dmenu"
+if [ "$DEBUG" == "yes" ];
+then
+	set -x
+fi
 
-term_to_use="roxterm"
+HOSTLIST_DIR="$HOME/.config/term-starter"
+
+if [ -z "$WAYLAND_DISPLAY" ];
+then
+	ROFI_CALL="rofi -dmenu"
+else
+	ROFI_CALL="wofi --gtk-dark -d"
+fi
+
+term_to_use="alacritty"
 
 function get_hostlist {
 	for HOST in `ls $HOSTLIST_DIR`
@@ -66,7 +77,7 @@ function call_command {
 		ping -c 1 "$address"
 		if [ $? -eq 0 ];
 		then
-			issue_terminal "$short_host" "ssh $ssh_args \"$short_host\" \"$cmd\""
+			issue_terminal "$short_host" "ssh $ssh_args $short_host -- $cmd"
 		else
 			notify-send --icon=process-stop "$short_host" "$address is not reachable!"
 		fi
@@ -80,6 +91,9 @@ issue_terminal() {
 	case $term_to_use in
 		roxterm)
 			$term_to_use --hide-menubar --title "$terminal_title" -e "$cmd"
+			;;
+		alacritty)
+			$term_to_use --title "$terminal_title" -e $cmd
 			;;
 		*)
 			xterm -title "$terminal_title" -e "$cmd"
