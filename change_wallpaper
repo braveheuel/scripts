@@ -1,0 +1,13 @@
+#!/bin/bash
+
+BG_FN="/home/ch/Bilder/Background/actual"
+
+rm -f "$BG_FN"
+ln -fs /home/ch/Bilder/Background/$(date +%Y)/$(date +%m).jpg "$BG_FN"
+
+if [ -z "$WAYLAND_DISPLAY" ];
+then
+	DISPLAY=:0.0 feh --bg-scale "$BG_FN"
+else 
+	swaymsg output '*' bg $HOME/Bilder/Background/actual stretch
+fi
