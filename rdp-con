@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+
+if [ $# -ne 1 ];
+then
+	echo "You missed the config name! (~/.config/rdp-con/<name>)"
+	exit 2
+fi
+
+CONFIG="$1"
+
+CRED_FILE="$HOME/.config/rdp-con/$CONFIG"
+
+if [ ! -e $CRED_FILE ];
+then
+	echo "Credential file $CRED_FILE not found!"
+fi
+
+source "$CRED_FILE"
+
+if [ "x$resolution" = "x" ];
+then
+	resolution="3835x1900"
+fi
+
+if [ "x$scale" = "x" ];
+then
+	scale="140"
+fi
+
+wlfreerdp /d:"$domain" /u:"$user" /v:"$machine" /p:"$password" /size:$resolution /audio-mode:1 /scale:$scale /network:auto /gdi:sw
+res=$?
+
+if [ $res -gt 0 ];
+then
+	notify-send -t 10000 --icon=dialog-error "*freerdp Fehler ($res)" "Konnte RDP-Sitzung nicht starten!"
+fi
+
+read -s -n 1 -p "Press any key to continue . . ."
+echo ""
